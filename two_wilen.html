@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Wilen</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 40px auto;
+        }
+        .nav-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            background-color: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #005bb5;
+        }
+        .content {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 16px;
+            color: #007AFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">&larr; Kembali ke Homepage</a>
+        <h2>Two Wilen</h2>
+        <div id="navigation">
+            <a class="nav-button" href="https://www.kreditplus.com/?action=homepage">Homepage</a>
+            <a class="nav-button" href="https://www.kreditplus.com/?action=login">Login</a>
+            <a class="nav-button" href="?action=verification">Verification</a>
+            <a class="nav-button" href="?action=approved&orderId=123">Approved</a>
+        </div>
+        <div class="content" id="content">
+            Selamat datang di halaman Two Wilen!
+        </div>
+    </div>
+    <script>
+        function notifyNative(action, url) {
+            // Notify parent (WebView) about URL change
+            window.webkit?.messageHandlers?.urlObserver?.postMessage({
+                action: action,
+                url: url
+            });
+
+            // Also notify parent window if inside iframe
+            if (window.parent !== window) {
+                window.parent.postMessage({
+                    action: action,
+                    url: url
+                }, '*');
+            }
+        }
+
+        function updateContent() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action') || 'homepage';
+            const content = document.getElementById('content');
+
+            // Notify about URL change
+            notifyNative(action, window.location.href);
+
+            switch(action) {
+                case 'homepage':
+                    content.innerHTML = '<h3>Homepage</h3><p>Selamat datang di halaman Two Wilen!</p>';
+                    break;
+                case 'login':
+                    content.innerHTML = '<h3>Login Page</h3><p>Ini adalah halaman login.</p>';
+                    break;
+                case 'verification':
+                    content.innerHTML = '<h3>Verification Page</h3><p>Silakan verifikasi akun Anda.</p>';
+                    break;
+                case 'approved':
+                    const orderId = urlParams.get('orderId') || '123';
+                    content.innerHTML = `<h3>Approved Page</h3><p>Order ID: ${orderId}</p>`;
+                    break;
+                default:
+                    content.innerHTML = '<h3>404</h3><p>Halaman tidak ditemukan.</p>';
+            }
+        }
+
+        // Update content on page load
+        updateContent();
+
+        // Update content when using browser back/forward buttons
+        window.onpopstate = updateContent;
+
+        // Listen for clicks on navigation links
+        document.getElementById('navigation').addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                const href = e.target.getAttribute('href');
+                window.history.pushState({}, '', href);
+                updateContent();
+            }
+        });
+    </script>
+</body>
+</html> 
