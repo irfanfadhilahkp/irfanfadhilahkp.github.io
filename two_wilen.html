@@ -78,10 +78,6 @@
             }
         }
 
-        function redirectToB() {
-            window.location.href = "https://www.kreditplus.com/?action=homepage";
-        }
-
         function updateContent() {
             const urlParams = new URLSearchParams(window.location.search);
             const action = urlParams.get('action') || 'homepage';
@@ -118,6 +114,7 @@
         // Listen for clicks on navigation links
         document.getElementById('navigation').addEventListener('click', function(e) {
             if (e.target.tagName === 'A') {
+                e.preventDefault();
                 const href = e.target.getAttribute('href');
 
                 // cek apakah link mengarah ke domain lain
@@ -125,12 +122,11 @@
 
                 if (isExternal) {
                     // biarkan browser handle normal redirect
+                    window.location.href = href;
                     return;
                 }
 
                 // kalau internal, tetap SPA style
-                e.preventDefault();
-                const href = e.target.getAttribute('href');
                 window.history.pushState({}, '', href);
                 updateContent();
             }
