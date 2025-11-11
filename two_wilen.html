@@ -52,7 +52,7 @@
         <a href="index.html" class="back-link">&larr; Kembali ke Homepage</a>
         <h2>Two Wilen</h2>
         <div id="navigation">
-            <a class="nav-button" href="https://www.kreditplus.com/?action=homepage">Homepage</a>
+            <a class="nav-button" href="https://kreditplus.com/?action=homepage">Homepage</a>
             <a class="nav-button" href="https://www.kreditplus.com/?action=login">Login</a>
             <a class="nav-button" href="?action=verification">Verification</a>
             <a class="nav-button" href="?action=approved&orderId=123">Approved</a>
@@ -76,6 +76,10 @@
                     url: url
                 }, '*');
             }
+        }
+
+        function redirectToB() {
+            window.location.href = "https://www.kreditplus.com/?action=homepage";
         }
 
         function updateContent() {
