@@ -119,6 +119,18 @@
         document.getElementById('navigation').addEventListener('click', function(e) {
             if (e.target.tagName === 'A') {
                 const href = e.target.getAttribute('href');
+
+                // cek apakah link mengarah ke domain lain
+                const isExternal = href.startsWith('http://') || href.startsWith('https://');
+
+                if (isExternal) {
+                    // biarkan browser handle normal redirect
+                    return;
+                }
+
+                // kalau internal, tetap SPA style
+                e.preventDefault();
+                const href = e.target.getAttribute('href');
                 window.history.pushState({}, '', href);
                 updateContent();
             }
