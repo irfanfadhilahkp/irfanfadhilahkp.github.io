@@ -118,7 +118,6 @@
         // Listen for clicks on navigation links
         document.getElementById('navigation').addEventListener('click', function(e) {
             if (e.target.tagName === 'A') {
-<!--                e.preventDefault();-->
                 const href = e.target.getAttribute('href');
                 window.history.pushState({}, '', href);
                 updateContent();
